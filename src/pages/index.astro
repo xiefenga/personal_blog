@@ -1,0 +1,41 @@
+---
+import BaseLayout from "~/layouts/base-layout.astro";
+
+import PostList from "~/components/post-list.astro";
+
+import { getCollection } from "astro:content";
+
+const posts = (await getCollection("blog")).sort(
+  (a, b) => b.data.created.valueOf() - a.data.created.valueOf()
+);
+---
+
+<BaseLayout>
+  <div class="relative inline-block px-1 mb-6">
+    <h1 class="text-2xl font-bold">Posts</h1>
+    <span
+      class="absolute inset-x-0 bottom-0 -z-10 h-3 bg-[#C4E7E8] opacity-60 dark:bg-[#1D1E1F] dark:opacity-100"
+    >
+      <!-- block -->
+    </span>
+  </div>
+  {
+    posts.length > 0 ? (
+      <PostList
+        class="min-h-[calc(100vh-276px)]"
+        posts={posts.map((post) => ({
+          id: post.id,
+          title: post.data.title,
+          created: post.data.created,
+          updated: post.data.updated,
+        }))}
+      />
+    ) : (
+      <div class="min-h-[400px] flex items-center justify-center">
+        <p class="text-gray-500 dark:text-gray-400 text-center py-8">
+          暂无文章
+        </p>
+      </div>
+    )
+  }
+</BaseLayout>

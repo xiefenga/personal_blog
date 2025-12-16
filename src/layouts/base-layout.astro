@@ -1,0 +1,32 @@
+---
+import "~/styles/global.css";
+
+import { SITE_TITLE } from "astro:env/server";
+
+import Footer from "~/components/footer.astro";
+import Header from "~/components/header.astro";
+import BaseHead from "~/components/base-head.astro";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<html lang="zh-CN">
+  <head>
+    <BaseHead
+      title={title ? `${title} - ${SITE_TITLE}` : SITE_TITLE}
+      description={description}
+    />
+  </head>
+  <body class="bg-[#faf8f5] dark:bg-[#2a2b2d] dark:text-[#fafafa]">
+    <Header />
+    <main class="mx-auto w-full max-w-4xl p-4">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

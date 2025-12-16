@@ -1,0 +1,33 @@
+---
+import { Image } from "astro:assets";
+
+import RssLink from "./rss-link.astro";
+import ThemeToggle from "./theme-toggle.astro";
+---
+
+<!-- sticky top-0 z-10 -->
+<header class="max-w-4xl mx-auto px-4 py-8">
+  <nav class="flex flex-row gap-2 items-center justify-between">
+    <a
+      tabindex="-1"
+      draggable="false"
+      class="font-bold italic text-2xl flex flex-row gap-2 items-center justify-center focus-outline"
+      href="/"
+    >
+      <Image
+        src="/logo.jpg"
+        alt="logo"
+        width={32}
+        height={32}
+        class="rounded-full max-h-8"
+        draggable="false"
+      />
+
+      <span>0x1461A0's Blog </span>
+    </a>
+    <div class="flex flex-row gap-4 items-center">
+      <RssLink />
+      <ThemeToggle />
+    </div>
+  </nav>
+</header>

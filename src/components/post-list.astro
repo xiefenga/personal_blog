@@ -1,0 +1,65 @@
+---
+import dayjs from "dayjs";
+
+interface Props {
+  posts: {
+    id: string;
+    title: string;
+    created: Date;
+    updated: Date;
+  }[];
+  class?: string;
+}
+
+const { posts, class: className = "" } = Astro.props;
+
+// 按年份分组
+const postsByYear = posts.reduce(
+  (acc, post) => {
+    const year = dayjs(post.created).year();
+    if (!acc[year]) {
+      acc[year] = [];
+    }
+    acc[year].push(post);
+    return acc;
+  },
+  {} as Record<number, typeof posts>
+);
+
+// 按年份倒序排列
+const sortedYears = Object.keys(postsByYear)
+  .map(Number)
+  .sort((a, b) => b - a);
+---
+
+<div class:list={[className]}>
+  {
+    sortedYears.map((year) => (
+      <section class="mb-6">
+        <h2 class="text-lg font-bold mb-4 text-[#a1a1a1] dark:text-[#a1a1a1]">
+          {year}
+        </h2>
+        <ul class="space-y-4">
+          {postsByYear[year].map((post) => (
+            <li>
+              <a
+                class="group flex items-center justify-between gap-4 rounded-xl"
+                href={`/post/${post.id}/`}
+              >
+                <span
+                  title={post.title}
+                  class="text-lg truncate group-hover:opacity-70 transition-opacity"
+                >
+                  {post.title}
+                </span>
+                <span class="shrink-0 text-sm text-gray-400 dark:text-gray-500">
+                  {dayjs(post.created).format("YYYY-MM-DD")}
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))
+  }
+</div>
