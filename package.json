@@ -4,6 +4,7 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
+    "prebuild": "rm -rf content && git clone --depth 1 ${CONTENT_REPO_URL} content && rm -rf content/.git",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro"
