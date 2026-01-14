@@ -38,23 +38,26 @@ const { Content } = await render(post);
   </article>
 
   <script>
-    const codeBlocks = document.querySelectorAll(".code-block-wrapper");
-    codeBlocks.forEach((codeBlock) => {
-      const copyBtn = codeBlock.querySelector(".code-block-copy");
-      const code = codeBlock.querySelector("code");
-      copyBtn?.addEventListener("click", () => {
-        if (code) {
-          const btn = copyBtn as HTMLElement;
-          if (btn.dataset.isCopying === "true") {
-            return;
+    const registerCopyCode = () => {
+      const codeBlocks = document.querySelectorAll(".code-block-wrapper");
+      codeBlocks.forEach((codeBlock) => {
+        const copyBtn = codeBlock.querySelector(".code-block-copy");
+        const code = codeBlock.querySelector("code");
+        copyBtn?.addEventListener("click", () => {
+          if (code) {
+            const btn = copyBtn as HTMLElement;
+            if (btn.dataset.isCopying === "true") {
+              return;
+            }
+            btn.dataset.isCopying = "true";
+            navigator.clipboard.writeText(code.textContent ?? "");
+            setTimeout(() => {
+              delete btn.dataset.isCopying;
+            }, 1000);
           }
-          btn.dataset.isCopying = "true";
-          navigator.clipboard.writeText(code.textContent ?? "");
-          setTimeout(() => {
-            delete btn.dataset.isCopying;
-          }, 1000);
-        }
+        });
       });
-    });
+    };
+    document.addEventListener("DOMContentLoaded", registerCopyCode);
   </script>
 </BaseLayout>
